@@ -107,13 +107,32 @@
 <!-- Command to provide the browser type as an argument >>> mvn test -PRegression -Dbrowser=firefox  -->
 
   <profiles>
-  <profile>
-  <id>Regression</id>
   
+  <profile>
+  <id>CompleteFlow</id>
   <build>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
-      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M6</version>
+        <configuration>
+          <suiteXmlFiles>
+            <suiteXmlFile>testSuites/CompleteFlow.xml</suiteXmlFile>
+          </suiteXmlFiles>
+        </configuration>
+      </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  </profile>
+  
+  <profile>
+  <id>Regression</id>
+  <build>
+    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+      <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -125,15 +144,12 @@
         </configuration>
       </plugin>
       </plugins>
-       </pluginManagement>
-         </build>
-  
+    </pluginManagement>
+  </build>
   </profile>
   
    <profile>
   <id>Purchase</id>
-  
-   
   <build>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
