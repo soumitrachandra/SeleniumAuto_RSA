@@ -39,6 +39,7 @@ public class BaseTest {
 	public LandingPage landingPage;
 
 	public WebDriver initializeDriver() throws IOException	{		// properties class
+		System.out.println("========== initializeDriver START ==========");
 	Properties prop = new Properties();		 //<---- I can use static as prop is being used for reading purpose only.
 	FileInputStream fis = new FileInputStream(System.getProperty("user.dir")
 			 + "//src//main//java//rahulshettyacademy//resources//GlobalData.properties");
@@ -47,11 +48,21 @@ public class BaseTest {
 	 //prop.getProperty("browser");
 	 
 	if (browserName.contains("chrome")) {
-	ChromeOptions options = new ChromeOptions();
-	//	 WebDriverManager.chromedriver().setup();	//<---- Comments by Saumi and added the below line
+		System.out.println("Browser requested: CHROME");
+		/*
+		 * WebDriverManager.chromedriver().clearDriverCache();
+		 * WebDriverManager.chromedriver().clearResolutionCache();
+		 * 
+		 * WebDriverManager.chromedriver().setup(); //<---- Comments by Saumi and added
+		 * the below line
+		 */		
+		ChromeOptions options = new ChromeOptions();
+		 System.out.println("Creating ChromeDriver...");
+		driver = new ChromeDriver(options);
+		 System.out.println("ChromeDriver CREATED successfully");
 //< ---------- Added by Saumi not using WebDriverManager ---------- ----------> 
 //	System.setProperty("webdriver.chrome.driver","/home/saumi/SAUMI/SAUMI/MyWork/Wind11Laptop/EclipseWorkSpace/chromedriver-linux64/chromedriver");
-	System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+ "/chromedriver-linux64/chromedriver");
+		System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+ "/chromedriver-linux64/chromedriver");
 	//< ---------- Added by Saumi not using WebDriverManager ---------- ---------->
 //<---------- Added the below lines to suppress chrome pop ---------- ---------- >		
 	//	options.addArguments("--force-device-scale-factor=1.33"); // Browser opens in 75 zoom.
@@ -72,6 +83,8 @@ public class BaseTest {
 		driver = new ChromeDriver(options);
 //		driver.manage().window().setSize(new Dimension(1440,900));//full screen 
 		driver.manage().window().setSize(new Dimension(1920,1080));
+		System.out.println("Browser maximized");
+
 	 	}
 	 
 	 else if (browserName.equalsIgnoreCase("firefox")) {							//<---- Firefox
@@ -83,6 +96,7 @@ public class BaseTest {
 		driver = new EdgeDriver();				}
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		driver.manage().window().maximize();
+		System.out.println("========== initializeDriver END ==========");
 		return driver;
 	}
 
@@ -106,12 +120,19 @@ public class BaseTest {
 	
 	@BeforeMethod(alwaysRun=true)
 	public LandingPage launchApplication() throws IOException		{
+		System.out.println("========== launchApplication START ==========");
 		driver = initializeDriver();
+		 System.out.println("Driver object = " + driver);
 		landingPage = new LandingPage(driver);
 		landingPage.goToURL();
+		System.out.println("URL opened successfully");
 		return landingPage;
 	}
 	
 	@AfterMethod(alwaysRun=true)
-	public void tearDown()	{		driver.close();			}
+	public void tearDown()	{		
+		if(driver!=null) {
+			driver.close();
+		}
+					}
 }
